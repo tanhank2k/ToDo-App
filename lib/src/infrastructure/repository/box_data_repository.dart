@@ -14,7 +14,7 @@ class BoxDataRepository extends BoxDataService {
     switch (eventType) {
       case EventType.today:
         DateTime now = DateTime.now();
-        query = (eventBox.query(EventModel_.name.contains(searchText) &
+        query = (eventBox.query(EventModel_.content.contains(searchText) &
                 EventModel_.date.between(
                     DateTime(now.year, now.month, now.day).millisecondsSinceEpoch,
                     DateTime(now.year, now.month, now.day)
@@ -24,14 +24,14 @@ class BoxDataRepository extends BoxDataService {
             .build();
         break;
       case EventType.upcoming:
-        query = (eventBox.query(EventModel_.name.contains(searchText) &
+        query = (eventBox.query(EventModel_.content.contains(searchText) &
                 EventModel_.date.greaterThan(DateTime.now().millisecondsSinceEpoch) &
                 EventModel_.isDone.equals(false))
               ..order(EventModel_.date))
             .build();
         break;
       case EventType.all:
-        query = (eventBox.query(EventModel_.name.contains(searchText))..order(EventModel_.date))
+        query = (eventBox.query(EventModel_.content.contains(searchText))..order(EventModel_.date))
             .build();
         break;
     }

@@ -30,7 +30,7 @@ class EventItemWidget extends StatelessWidget {
                   children: [
                     Text(event.content ?? '', style: context.textTheme.titleMedium),
                     Text(
-                      event.date.format('dd/MM -  HH:mm') ?? '',
+                      event.date.format('dd/MM -  HH:mm'),
                       style: context.textTheme.labelSmall,
                     ),
                   ],

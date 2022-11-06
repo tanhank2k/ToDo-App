@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:todo_app/core/enum_value.dart';
 import 'package:todo_app/src/domain/model/event_model.dart';
 import 'package:todo_app/src/domain/service/box_data_service.dart';
+import 'package:todo_app/src/domain/service/local_notice_service.dart';
 
 class HomeController extends GetxController {
   FocusNode focusNode = FocusNode();
@@ -56,6 +57,9 @@ class HomeController extends GetxController {
   void deleteEvent(EventModel event) {
     events.remove(event);
     BoxDataService boxDataService = Get.find();
+
+    LocalNoticeService localNoticeService = Get.find();
     boxDataService.deleteEvent(event.id);
+    localNoticeService.cancelNotification(event.id);
   }
 }

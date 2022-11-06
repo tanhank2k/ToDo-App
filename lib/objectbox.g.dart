@@ -20,15 +20,31 @@ export 'package:objectbox/objectbox.dart'; // so that callers only have to impor
 
 final _entities = <ModelEntity>[
   ModelEntity(
-      id: const IdUid(1, 4453571201750822153),
+      id: const IdUid(1, 9153917405327283251),
       name: 'EventModel',
-      lastPropertyId: const IdUid(4, 6672772173851541605),
+      lastPropertyId: const IdUid(4, 2697323259955410776),
       flags: 0,
       properties: <ModelProperty>[
-        ModelProperty(id: const IdUid(1, 3147299938593019452), name: 'id', type: 6, flags: 1),
-        ModelProperty(id: const IdUid(2, 3374948790574269620), name: 'name', type: 9, flags: 0),
-        ModelProperty(id: const IdUid(3, 6436681634393945622), name: 'date', type: 10, flags: 0),
-        ModelProperty(id: const IdUid(4, 6672772173851541605), name: 'isDone', type: 1, flags: 0)
+        ModelProperty(
+            id: const IdUid(1, 1504828181217956573),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(2, 4009279977815094192),
+            name: 'content',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 2390671739088983575),
+            name: 'date',
+            type: 10,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 2697323259955410776),
+            name: 'isDone',
+            type: 1,
+            flags: 0)
       ],
       relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[])
@@ -54,7 +70,7 @@ Future<Store> openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(1, 4453571201750822153),
+      lastEntityId: const IdUid(1, 9153917405327283251),
       lastIndexId: const IdUid(0, 0),
       lastRelationId: const IdUid(0, 0),
       lastSequenceId: const IdUid(0, 0),
@@ -76,10 +92,11 @@ ModelDefinition getObjectBoxModel() {
           object.id = id;
         },
         objectToFB: (EventModel object, fb.Builder fbb) {
-          final nameOffset = object.content == null ? null : fbb.writeString(object.content!);
+          final contentOffset =
+              object.content == null ? null : fbb.writeString(object.content!);
           fbb.startTable(5);
           fbb.addInt64(0, object.id);
-          fbb.addOffset(1, nameOffset);
+          fbb.addOffset(1, contentOffset);
           fbb.addInt64(2, object.date?.millisecondsSinceEpoch);
           fbb.addBool(3, object.isDone);
           fbb.finish(fbb.endTable());
@@ -88,12 +105,16 @@ ModelDefinition getObjectBoxModel() {
         objectFromFB: (Store store, ByteData fbData) {
           final buffer = fb.BufferContext(fbData);
           final rootOffset = buffer.derefObject(0);
-          final dateValue = const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 8);
+          final dateValue =
+              const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 8);
           final object = EventModel(
               content: const fb.StringReader(asciiOptimization: true)
                   .vTableGetNullable(buffer, rootOffset, 6),
-              date: dateValue == null ? null : DateTime.fromMillisecondsSinceEpoch(dateValue),
-              isDone: const fb.BoolReader().vTableGetNullable(buffer, rootOffset, 10))
+              date: dateValue == null
+                  ? null
+                  : DateTime.fromMillisecondsSinceEpoch(dateValue),
+              isDone: const fb.BoolReader()
+                  .vTableGetNullable(buffer, rootOffset, 10))
             ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
 
           return object;
@@ -106,14 +127,18 @@ ModelDefinition getObjectBoxModel() {
 /// [EventModel] entity fields to define ObjectBox queries.
 class EventModel_ {
   /// see [EventModel.id]
-  static final id = QueryIntegerProperty<EventModel>(_entities[0].properties[0]);
+  static final id =
+      QueryIntegerProperty<EventModel>(_entities[0].properties[0]);
 
   /// see [EventModel.content]
-  static final name = QueryStringProperty<EventModel>(_entities[0].properties[1]);
+  static final content =
+      QueryStringProperty<EventModel>(_entities[0].properties[1]);
 
   /// see [EventModel.date]
-  static final date = QueryIntegerProperty<EventModel>(_entities[0].properties[2]);
+  static final date =
+      QueryIntegerProperty<EventModel>(_entities[0].properties[2]);
 
   /// see [EventModel.isDone]
-  static final isDone = QueryBooleanProperty<EventModel>(_entities[0].properties[3]);
+  static final isDone =
+      QueryBooleanProperty<EventModel>(_entities[0].properties[3]);
 }
